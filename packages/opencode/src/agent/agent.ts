@@ -14,6 +14,9 @@ import PROMPT_EXPLORE from "./prompt/explore.txt"
 import PROMPT_SUMMARY from "./prompt/summary.txt"
 import PROMPT_TITLE from "./prompt/title.txt"
 import PROMPT_TEST from "./prompt/test.txt"
+import PROMPT_ARCHITECT from "./prompt/architect.txt"
+import PROMPT_REVIEWER from "./prompt/reviewer.txt"
+import PROMPT_CODER from "./prompt/coder.txt"
 import { PermissionNext } from "@/permission/next"
 import { mergeDeep, pipe, sortBy, values } from "remeda"
 import { Global } from "@/global"
@@ -169,6 +172,80 @@ export namespace Agent {
             glob: "allow",
             grep: "allow",
             bash: "allow",
+          }),
+          user,
+        ),
+        options: {},
+        mode: "subagent",
+        native: true,
+      },
+      architect: {
+        name: "architect",
+        description:
+          "Orchestrator agent that coordinates review-implement-review cycles. Never writes code itself — spawns reviewer and coder subagents. Use this for complex tasks requiring structured code review loops.",
+        prompt: PROMPT_ARCHITECT,
+        permission: PermissionNext.merge(
+          defaults,
+          PermissionNext.fromConfig({
+            task: "allow",
+            memory_save: "allow",
+            memory_read: "allow",
+            question: "allow",
+            todowrite: "deny",
+            todoread: "deny",
+          }),
+          user,
+        ),
+        options: {},
+        mode: "all",
+        native: true,
+      },
+      reviewer: {
+        name: "reviewer",
+        description:
+          "Code review specialist that analyzes codebases and reviews changes. Operates in two modes: initial (full analysis) and iterate (diff review). Communicates via memory.",
+        prompt: PROMPT_REVIEWER,
+        permission: PermissionNext.merge(
+          defaults,
+          PermissionNext.fromConfig({
+            read: "allow",
+            glob: "allow",
+            grep: "allow",
+            semantic_search: "allow",
+            codesearch: "allow",
+            memory_save: "allow",
+            memory_read: "allow",
+            list: "allow",
+            depgraph: "allow",
+            todowrite: "deny",
+            todoread: "deny",
+          }),
+          user,
+        ),
+        options: {},
+        mode: "subagent",
+        native: true,
+      },
+      coder: {
+        name: "coder",
+        description:
+          "Implementation specialist that writes code based on structured task specifications from memory. Reads task specs and review feedback, implements targeted changes.",
+        prompt: PROMPT_CODER,
+        permission: PermissionNext.merge(
+          defaults,
+          PermissionNext.fromConfig({
+            read: "allow",
+            write: "allow",
+            edit: "allow",
+            glob: "allow",
+            grep: "allow",
+            bash: "allow",
+            semantic_search: "allow",
+            memory_save: "allow",
+            memory_read: "allow",
+            list: "allow",
+            todowrite: "deny",
+            todoread: "deny",
           }),
           user,
         ),
