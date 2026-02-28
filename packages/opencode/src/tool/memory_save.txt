@@ -1,0 +1,10 @@
+Saves a memory (fact, decision, or preference) that should persist across conversation sessions.
+
+Use this tool when the user explicitly asks to remember something, or when an important decision, preference, or discovery is made during the conversation that would be valuable in future sessions.
+
+Memory types:
+- **decision**: A technical or architectural decision (e.g. "We use Zod for validation")
+- **preference**: A user preference or convention (e.g. "Prefer functional components over class components")
+- **discovery**: An important finding about the codebase (e.g. "The auth module uses JWT tokens stored in HTTP-only cookies")
+
+Memories are scoped to the current project and will be automatically injected into future sessions.

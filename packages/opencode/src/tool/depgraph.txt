@@ -1,0 +1,14 @@
+Analyzes the codebase dependency graph for TypeScript/JavaScript files.
+
+Operations:
+- **dependencies**: Lists all files that the specified file imports (direct dependencies)
+- **dependents**: Lists all files that import the specified file (reverse dependencies)
+- **graph**: Returns the adjacency list around the specified file (both directions, depth-limited)
+
+Usage notes:
+- Provide an absolute file path or a path relative to the project root
+- The graph is built lazily on first call and cached per project
+- Supports `.ts`, `.tsx`, `.js`, `.jsx` files
+- Resolves relative imports to absolute paths
+- Handles `import ... from "..."`, `import(...)`, and `require(...)` patterns
+- Skips `node_modules`, `.git`, `dist`, and `build` directories

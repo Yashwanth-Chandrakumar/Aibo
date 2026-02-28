@@ -1,0 +1,6 @@
+Retrieves saved memories (facts, decisions, and preferences) from previous conversation sessions.
+
+- Without a query: lists all saved memories for the current project
+- With a query: searches memories by keyword matching against topic and content
+- Returns formatted memory entries with their type, topic, and content
+- Use this to recall previously saved decisions, preferences, or discoveries

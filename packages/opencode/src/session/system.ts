@@ -1,6 +1,7 @@
 import { Ripgrep } from "../file/ripgrep"
 
 import { Instance } from "../project/instance"
+import { ConversationMemory } from "./memory"
 
 import PROMPT_ANTHROPIC from "./prompt/anthropic.txt"
 import PROMPT_ANTHROPIC_WITHOUT_TODO from "./prompt/qwen.txt"
@@ -28,6 +29,18 @@ export namespace SystemPrompt {
 
   export async function environment(model: Provider.Model) {
     const project = Instance.project
+
+    // Inject conversation memories from previous sessions
+    let memoriesBlock = ""
+    try {
+      const memories = await ConversationMemory.inject()
+      if (memories.length > 0) {
+        memoriesBlock = [`<memories>`, memories, `</memories>`].join("\n")
+      }
+    } catch {
+      // memory injection is best-effort
+    }
+
     return [
       [
         `You are powered by the model named ${model.api.id}. The exact model ID is ${model.providerID}/${model.api.id}`,
@@ -48,7 +61,10 @@ export namespace SystemPrompt {
             : ""
         }`,
         `</directories>`,
-      ].join("\n"),
+        memoriesBlock,
+      ]
+        .filter(Boolean)
+        .join("\n"),
     ]
   }
 }

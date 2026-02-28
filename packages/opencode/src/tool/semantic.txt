@@ -1,0 +1,11 @@
+Performs semantic code search across the local codebase using TF-IDF text similarity.
+
+- Finds files relevant to a natural language query (e.g. "authentication middleware", "database connection pool")
+- Tokenizes source code by splitting on camelCase, snake_case, and punctuation boundaries
+- Ranks results by cosine similarity using TF-IDF weighted terms
+- Returns the top-N most relevant files with relevance scores and preview snippets
+- Supports: `.ts`, `.tsx`, `.js`, `.jsx`, `.py`, `.go`, `.rs`, `.java`, `.md` files
+- Skips `node_modules`, `.git`, `dist`, `build` directories
+- The index is built lazily on first query and cached per project
+- Use the `limit` parameter to control how many results are returned (default: 10)
+- Best for exploratory searches when you don't know exact filenames or patterns
