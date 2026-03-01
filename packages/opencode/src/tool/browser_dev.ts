@@ -35,13 +35,8 @@ export const BrowserDevTool = Tool.define("browser_dev", async () => {
       url: z
         .string()
         .optional()
-        .describe(
-          "The dev server URL to check. If not provided, auto-detects common ports (3000, 5173, etc.).",
-        ),
-      path: z
-        .string()
-        .optional()
-        .describe("Path to append to the base URL (e.g. '/dashboard', '/settings')."),
+        .describe("The dev server URL to check. If not provided, auto-detects common ports (3000, 5173, etc.)."),
+      path: z.string().optional().describe("Path to append to the base URL (e.g. '/dashboard', '/settings')."),
       full_check: z
         .boolean()
         .default(true)
@@ -77,9 +72,9 @@ export const BrowserDevTool = Tool.define("browser_dev", async () => {
       })
 
       // Resolve URL
-      let baseUrl = params.url
+      let baseUrl: string | undefined = params.url
       if (!baseUrl) {
-        baseUrl = await detectDevServer()
+        baseUrl = (await detectDevServer()) ?? undefined
         if (!baseUrl) {
           return {
             title: "No dev server found",
