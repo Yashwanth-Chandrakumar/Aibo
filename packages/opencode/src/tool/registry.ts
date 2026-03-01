@@ -34,6 +34,8 @@ import { DepGraphTool } from "./depgraph"
 import { SemanticSearchTool } from "./semantic"
 import { MemorySaveTool } from "./memory_save"
 import { MemoryReadTool } from "./memory_read"
+import { BrowserTool } from "./browser"
+import { BrowserDevTool } from "./browser_dev"
 
 export namespace ToolRegistry {
   const log = Log.create({ service: "tool.registry" })
@@ -125,6 +127,8 @@ export namespace ToolRegistry {
       SemanticSearchTool,
       MemorySaveTool,
       MemoryReadTool,
+      BrowserTool,
+      BrowserDevTool,
       ...(Flag.OPENCODE_EXPERIMENTAL_LSP_TOOL ? [LspTool] : []),
       ...(config.experimental?.batch_tool === true ? [BatchTool] : []),
       ...(Flag.OPENCODE_EXPERIMENTAL_PLAN_MODE && Flag.OPENCODE_CLIENT === "cli" ? [PlanExitTool] : []),

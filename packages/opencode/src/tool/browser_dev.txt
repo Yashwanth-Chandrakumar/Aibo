@@ -1,0 +1,17 @@
+Verify frontend changes on a local development server by opening it in a browser, taking snapshots, screenshots, and checking for errors.
+
+This tool is specifically designed for the development workflow:
+1. Opens a local dev server URL (e.g. http://localhost:3000)
+2. Waits for the page to load
+3. Takes an accessibility snapshot and screenshot
+4. Checks for console errors and JavaScript exceptions
+5. Returns a comprehensive report
+
+Use this tool after making frontend code changes to verify they render correctly.
+You can also provide a specific path to check (e.g. /dashboard, /settings).
+
+The tool automatically detects common dev server ports (3000, 3001, 4321, 5173, 5174, 8080, 8888).
+
+This tool requires agent-browser to be installed:
+  npm install -g agent-browser
+  agent-browser install

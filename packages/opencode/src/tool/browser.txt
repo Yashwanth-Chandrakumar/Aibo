@@ -1,0 +1,74 @@
+Navigate to a URL, take accessibility snapshots, click elements, fill forms, take screenshots, and interact with web pages using a real browser.
+
+Powered by agent-browser (Playwright + Rust CLI). Supports headless and headed modes, guest/persistent/user profiles, and multi-session isolation.
+
+## Available actions
+
+### Navigation & Page
+- **open**: Navigate to a URL. Returns page title.
+- **snapshot**: Get accessibility tree with element refs (@e1, @e2...). Best for understanding page structure.
+- **screenshot**: Take a screenshot of the current page. Returns base64 image.
+- **get_text**: Get text content of an element by selector or ref.
+- **get_url**: Get the current page URL.
+- **get_title**: Get the current page title.
+
+### Interaction
+- **click**: Click an element by ref (@e1) or CSS selector.
+- **fill**: Clear and fill a form field by ref or selector.
+- **type**: Type text into an element (appends, does not clear).
+- **select**: Select a dropdown option.
+- **check**: Check a checkbox.
+- **uncheck**: Uncheck a checkbox.
+- **press**: Press a keyboard key (Enter, Tab, Escape, etc.).
+- **scroll**: Scroll the page (up/down/left/right) or scroll an element.
+- **hover**: Hover over an element.
+
+### Waiting
+- **wait_for**: Wait for an element, text, URL pattern, or time (ms).
+
+### Tabs
+- **tab_list**: List all open tabs.
+- **tab_new**: Open a new tab, optionally with a URL.
+- **tab_switch**: Switch to a tab by index.
+- **tab_close**: Close a tab by index.
+
+### State & Debug
+- **console**: View console log messages from the page.
+- **errors**: View JavaScript errors from the page.
+- **cookies**: Get all cookies for the current page.
+
+### Diff (Visual Regression)
+- **diff_snapshot**: Compare current accessibility tree vs last snapshot.
+- **diff_screenshot**: Compare current screenshot vs a baseline image.
+
+### Session Management
+- **close**: Close the browser and end the session.
+
+## Optimal workflow
+
+1. `open` a URL
+2. `snapshot` to discover interactive elements with refs
+3. Use refs to `click`, `fill`, `select` etc.
+4. Re-`snapshot` after page changes to get updated refs
+5. Use `screenshot` for visual verification
+
+## Profile modes
+
+- **guest** (default): Fresh browser, no saved state.
+- **persistent**: Dedicated profile directory that persists across restarts (cookies, logins, cache).
+- **user**: Connect to your running Chrome instance (requires remote debugging enabled).
+
+## Configuration
+
+- `mode`: "headless" (default) or "headed" (visible browser window)
+- `profile`: "guest", "persistent", or "user"
+- `session`: Named session for multi-agent isolation
+- `viewport`: Custom viewport dimensions (default: 1280x720)
+
+## Usage notes
+
+- Refs (@e1, @e2) are the recommended way to target elements — they are deterministic from the last snapshot.
+- Use `snapshot` with interactive_only=true to reduce output size.
+- After any navigation or interaction that changes the page, take a new snapshot.
+- Use `wait_for` when page content loads asynchronously.
+- For frontend dev verification, open localhost URLs and use snapshot + screenshot to verify changes.
